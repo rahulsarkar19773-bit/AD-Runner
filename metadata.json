@@ -1,0 +1,8 @@
+{
+  "name": "Ad Exchange",
+  "description": "Ad Exchange and Link Sharing application with Feed and Link Management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
