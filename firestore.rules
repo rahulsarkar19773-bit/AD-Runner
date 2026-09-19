@@ -12,5 +12,9 @@ service cloud.firestore {
     match /links/{linkId} {
       allow read, write: if isAuthenticated();
     }
+    
+    match /notifications/{notificationId} {
+      allow read, write: if isAuthenticated();
+    }
   }
 }

@@ -42,8 +42,8 @@ export default function MyLinks({ user }: MyLinksProps) {
   };
 
   const handleAddNew = () => {
-    if (links.length >= 10) {
-      alert("Maximum limit of 10 links reached.");
+    if (links.length >= 20) {
+      alert("Maximum limit of 20 links reached.");
       return;
     }
     setEditingLink(null);
@@ -56,9 +56,9 @@ export default function MyLinks({ user }: MyLinksProps) {
         <div>
           <h2 className="text-xl font-bold text-slate-900">Manage Links</h2>
           <p className="text-sm text-slate-500 mt-1 font-medium">
-            <span className={links.length >= 10 ? 'text-red-500' : 'text-indigo-600'}>
+            <span className={links.length >= 20 ? 'text-red-500' : 'text-indigo-600'}>
               {links.length}
-            </span> / 10 Links Used
+            </span> / 20 Links Used
           </p>
         </div>
         <button 

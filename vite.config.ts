@@ -2,10 +2,40 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(), 
+      tailwindcss(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        devOptions: {
+          enabled: true
+        },
+        manifest: {
+          short_name: "AD Runner",
+          name: "AD Runner Network",
+          icons: [
+            {
+              src: "/logo.png",
+              type: "image/png",
+              sizes: "192x192"
+            },
+            {
+              src: "/logo.png",
+              type: "image/png",
+              sizes: "512x512"
+            }
+          ],
+          start_url: "/",
+          display: "standalone",
+          theme_color: "#0B0B0B",
+          background_color: "#ffffff"
+        }
+      })
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

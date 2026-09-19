@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { UserProfile, LinkItem } from '../types';
-import { doc, setDoc, updateDoc, deleteDoc, collection } from 'firebase/firestore';
+import { doc, setDoc, updateDoc, deleteDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { X, Trash2 } from 'lucide-react';
 
@@ -34,15 +34,32 @@ export default function LinkModal({ isOpen, onClose, link, user, onSuccess }: Li
     setLoading(true);
     setError('');
 
+    const trimmedUrl = url.trim();
+
     try {
+      // Check if URL already exists for this user
+      const q = query(collection(db, 'links'), where('userId', '==', user.uid), where('url', '==', trimmedUrl));
+      const querySnapshot = await getDocs(q);
+      
       if (link) {
+        // When updating, make sure we aren't changing it to a URL that already exists on ANOTHER link
+        const existingDuplicate = querySnapshot.docs.find(doc => doc.id !== link.id);
+        if (existingDuplicate) {
+          throw new Error('You have already added this link.');
+        }
+
         // Update
         const linkRef = doc(db, 'links', link.id);
         await updateDoc(linkRef, {
-          url,
-          description
+          url: trimmedUrl,
+          description: description.trim()
         });
       } else {
+        // When creating, throw error if URL exists
+        if (!querySnapshot.empty) {
+          throw new Error('You have already added this link.');
+        }
+
         // Create
         const newLinkRef = doc(collection(db, 'links'));
         await setDoc(newLinkRef, {
@@ -50,8 +67,8 @@ export default function LinkModal({ isOpen, onClose, link, user, onSuccess }: Li
           userId: user.uid,
           userName: user.name || 'User',
           userPhoto: user.photoURL || null,
-          url,
-          description,
+          url: trimmedUrl,
+          description: description.trim(),
           likes: 0,
           createdAt: Date.now()
         });

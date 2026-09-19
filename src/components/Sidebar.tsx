@@ -1,3 +1,4 @@
+import logoUrl from "../assets/logo.png";
 import { UserProfile } from '../types';
 import { auth } from '../lib/firebase';
 import { signOut } from 'firebase/auth';
@@ -65,7 +66,20 @@ export default function Sidebar({ isOpen, setIsOpen, user, currentView, setCurre
           </button>
           
           <div className="flex items-center space-x-3 mb-6">
-            <img src="/logo.png?v=6" alt="Logo" className="w-10 h-10 rounded-xl bg-[#1e1b4b] p-1" />
+            <div className="relative w-10 h-10 flex items-center justify-center">
+              {/* Outer Glow */}
+              <div className="absolute inset-[-30%] rounded-full bg-[conic-gradient(from_0deg,#4285F4,#8B5CF6,#EC4899,#F59E0B,#4285F4)] blur-md opacity-40 animate-[spin_3s_linear_infinite]"></div>
+              
+              {/* Spinning RGB Border Container */}
+              <div className="absolute inset-0 rounded-xl overflow-hidden shadow-lg">
+                <div className="absolute inset-[-50%] bg-[conic-gradient(from_0deg,#4285F4,#8B5CF6,#EC4899,#F59E0B,#4285F4)] animate-[spin_3s_linear_infinite]"></div>
+              </div>
+              
+              {/* Inner White Box */}
+              <div className="absolute inset-[2px] bg-white rounded-xl z-10 flex items-center justify-center"></div>
+              
+              <img src={logoUrl} alt="Logo" className="relative z-20 w-7 h-7 object-contain" />
+            </div>
             <span className="font-bold text-xl tracking-tight">AD Runner</span>
           </div>
           
